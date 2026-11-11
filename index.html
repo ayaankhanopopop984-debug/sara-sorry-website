@@ -326,11 +326,132 @@
           <p class="eyebrow rocket-headline" id="loveLaunchText"></p>
           <p class="rocket-countdown" id="rocketCountdown"></p>
           <p class="rocket-speed" id="rocketSpeed"></p>
-          <div class="rocket-world">
-            <div class="rocket-earth" id="rocketEarth"><span class="earth-globe">🌍</span><span class="earth-girl">👧🏻</span><span class="girl-heart">💗</span></div>
-            <div class="rocket-moon" id="rocketMoon"><span>🌙</span><small id="moonMessage"></small></div>
-            <div class="love-rocket" id="loveRocket" aria-label="A little rocket carrying a boy with a heart">
-              <span class="rocket-flame">🔥</span><span class="rocket-body">🚀</span><span class="rocket-boy">👨🏻‍🚀</span><span class="rocket-heart">💗</span>
+          <div class="rocket-world" id="rocketWorld">
+            <!-- Invisible SVG paths used by JavaScript to calculate the outbound and return journeys. -->
+            <svg class="rocket-path-defs" id="rocketPathDefs" aria-hidden="true" focusable="false">
+              <path id="rocketOutboundPath" fill="none" stroke="none" d="M 0 0 L 1 1"></path>
+              <path id="rocketReturnPath" fill="none" stroke="none" d="M 0 0 L 1 1"></path>
+            </svg>
+
+            <!-- Earth and Sara waiting for the rocket. -->
+            <div class="rocket-earth" id="rocketEarth" aria-label="Earth, with Sara waiting">
+              <svg viewBox="0 0 280 240" role="img" aria-label="A blue and green planet">
+                <defs>
+                  <radialGradient id="earthOceanGradient" cx="34%" cy="26%">
+                    <stop offset="0" stop-color="#a5f0ed"/>
+                    <stop offset=".48" stop-color="#40b8d0"/>
+                    <stop offset="1" stop-color="#244c91"/>
+                  </radialGradient>
+                  <linearGradient id="earthLandGradient" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#c5e9a2"/>
+                    <stop offset="1" stop-color="#4b9b79"/>
+                  </linearGradient>
+                  <clipPath id="earthClip">
+                    <circle cx="140" cy="144" r="108"/>
+                  </clipPath>
+                </defs>
+                <circle cx="140" cy="144" r="113" fill="#b9f0ed" opacity=".16"/>
+                <circle cx="140" cy="144" r="108" fill="url(#earthOceanGradient)" stroke="#c8f6f2" stroke-width="3"/>
+                <g clip-path="url(#earthClip)">
+                  <path d="M42 85 Q58 61 87 69 L102 83 94 102 112 116 99 133 75 129 65 151 42 145 27 119Z" fill="url(#earthLandGradient)"/>
+                  <path d="M113 40 Q136 47 148 67 L139 86 154 101 139 119 121 112 113 91 95 79Z" fill="#a7d88f"/>
+                  <path d="M157 103 Q181 83 208 97 L221 117 207 135 224 153 204 174 178 165 166 143 147 132Z" fill="url(#earthLandGradient)"/>
+                  <path d="M118 148 Q139 136 153 154 L160 181 145 209 128 196 119 173Z" fill="#8ecb86"/>
+                  <path d="M213 54 Q231 58 248 78 L239 99 220 93 205 76Z" fill="#b9e59a"/>
+                  <path d="M25 171 Q53 157 77 175 L92 197 67 216 37 207Z" fill="#79bc85"/>
+                  <path d="M33 88 Q95 35 158 51" fill="none" stroke="#e3ffff" stroke-width="9" opacity=".15"/>
+                  <path d="M23 161 Q65 188 117 181" fill="none" stroke="#e3ffff" stroke-width="7" opacity=".12"/>
+                </g>
+                <path d="M61 62 Q98 30 137 35" fill="none" stroke="#e9ffff" stroke-width="5" stroke-linecap="round" opacity=".55"/>
+                <g class="rocket-girl" transform="translate(174 81)">
+                  <path d="M8 31 Q-1 5 24 0 Q51 0 50 30 L43 48 11 46Z" fill="#56334a"/>
+                  <circle cx="27" cy="25" r="17" fill="#f4c7a9"/>
+                  <path d="M10 24 Q8 3 27 6 Q46 4 47 25 Q39 14 29 15 Q19 16 10 24Z" fill="#4c2d40"/>
+                  <circle cx="21" cy="27" r="1.8" fill="#493141"/>
+                  <circle cx="34" cy="27" r="1.8" fill="#493141"/>
+                  <path d="M23 35 Q28 39 33 35" fill="none" stroke="#a54f65" stroke-width="1.8" stroke-linecap="round"/>
+                  <path d="M10 47 Q27 38 45 48 L54 78 0 78Z" fill="#f5a3bc" stroke="#fff0f5" stroke-width="2"/>
+                  <path d="M11 54 L-1 69 M44 54 L55 66" fill="none" stroke="#f4c7a9" stroke-width="8" stroke-linecap="round"/>
+                  <path d="M12 77 L8 91 M42 77 L47 91" fill="none" stroke="#60405b" stroke-width="9" stroke-linecap="round"/>
+                  <path d="M49 2 C58 -5 64 5 57 11 C52 16 47 18 47 18 C45 11 42 7 49 2Z" fill="#ff7fa8"/>
+                </g>
+                <path d="M56 52 Q65 40 80 46 Q90 32 108 44 Q122 42 126 56 Q106 64 89 59 Q70 66 56 52Z" fill="#fff" opacity=".72"/>
+              </svg>
+            </div>
+
+            <!-- The moon stays at the destination while the rocket orbits it. -->
+            <div class="rocket-moon" id="rocketMoon" aria-label="The moon">
+              <svg viewBox="0 0 180 180" role="img" aria-label="A glowing golden moon">
+                <defs>
+                  <radialGradient id="moonSurfaceGradient" cx="32%" cy="25%">
+                    <stop offset="0" stop-color="#fffde7"/>
+                    <stop offset=".68" stop-color="#f6dda0"/>
+                    <stop offset="1" stop-color="#c99c69"/>
+                  </radialGradient>
+                </defs>
+                <circle cx="90" cy="82" r="76" fill="#ffe9b0" opacity=".12"/>
+                <circle cx="90" cy="82" r="61" fill="url(#moonSurfaceGradient)" stroke="#fff6d5" stroke-width="2"/>
+                <circle cx="66" cy="60" r="10" fill="#c8a777" opacity=".28"/>
+                <circle cx="111" cy="49" r="7" fill="#c8a777" opacity=".25"/>
+                <circle cx="113" cy="103" r="13" fill="#c8a777" opacity=".22"/>
+                <circle cx="72" cy="112" r="6" fill="#c8a777" opacity=".3"/>
+                <path d="M38 83 Q47 18 105 22" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".65"/>
+                <path d="M143 27 L147 37 157 41 147 45 143 55 139 45 129 41 139 37Z" fill="#fff7d8"/>
+              </svg>
+              <small id="moonMessage"></small>
+            </div>
+
+            <!-- One unified SVG rocket and astronaut, positioned by the journey animation. -->
+            <div class="love-rocket" id="loveRocket" aria-label="A rocket carrying an astronaut">
+              <svg viewBox="0 0 220 300" role="img" aria-label="A pink and white rocket with an astronaut">
+                <defs>
+                  <linearGradient id="rocketHullGradient" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#fffdfd"/>
+                    <stop offset=".55" stop-color="#f8dce9"/>
+                    <stop offset="1" stop-color="#d88eae"/>
+                  </linearGradient>
+                  <linearGradient id="rocketFinGradient" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#ffbdd2"/>
+                    <stop offset="1" stop-color="#c95183"/>
+                  </linearGradient>
+                  <radialGradient id="rocketWindowGradient" cx="32%" cy="25%">
+                    <stop offset="0" stop-color="#e8ffff"/>
+                    <stop offset="1" stop-color="#68a8c4"/>
+                  </radialGradient>
+                  <linearGradient id="rocketFlameGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0" stop-color="#fff4b2"/>
+                    <stop offset=".5" stop-color="#ff9d71"/>
+                    <stop offset="1" stop-color="#ef5688"/>
+                  </linearGradient>
+                </defs>
+
+                <g class="rocket-flame-group">
+                  <path d="M82 207 Q71 249 92 282 Q100 265 110 292 Q128 258 138 282 Q151 246 138 207Z" fill="url(#rocketFlameGradient)"/>
+                  <path d="M96 211 Q91 244 110 264 Q128 241 124 211Z" fill="#fff5d5" opacity=".9"/>
+                </g>
+
+                <path d="M76 179 L39 224 Q66 220 91 205Z" fill="url(#rocketFinGradient)" stroke="#a84773" stroke-width="3"/>
+                <path d="M144 179 L181 224 Q154 220 129 205Z" fill="url(#rocketFinGradient)" stroke="#a84773" stroke-width="3"/>
+                <path d="M110 17 C82 47 61 94 61 148 L69 211 Q110 231 151 211 L159 148 C159 94 138 47 110 17Z" fill="url(#rocketHullGradient)" stroke="#a84773" stroke-width="4"/>
+                <path d="M110 21 C92 50 84 79 82 105" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".7"/>
+                <path d="M64 158 Q110 172 156 158" fill="none" stroke="#d98cab" stroke-width="4"/>
+                <circle cx="110" cy="121" r="34" fill="#a94d7a" stroke="#fff7fb" stroke-width="5"/>
+                <circle cx="110" cy="121" r="27" fill="url(#rocketWindowGradient)" stroke="#6b829b" stroke-width="2"/>
+                <g class="rocket-boy-rider">
+                  <path d="M89 121 Q88 99 109 98 Q132 98 132 122 L128 137 93 137Z" fill="#62445e"/>
+                  <circle cx="110" cy="116" r="15" fill="#f0c4a7"/>
+                  <path d="M95 115 Q95 96 112 100 Q126 101 126 115 Q116 107 109 108 Q101 108 95 115Z" fill="#493344"/>
+                  <circle cx="105" cy="118" r="1.5" fill="#50384a"/>
+                  <circle cx="116" cy="118" r="1.5" fill="#50384a"/>
+                  <path d="M106 125 Q111 129 116 125" fill="none" stroke="#a65b6e" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M96 137 Q110 128 125 137 L128 150 93 150Z" fill="#fff5fa"/>
+                  <path d="M96 140 L88 130 M124 140 L132 130" stroke="#f0c4a7" stroke-width="5" stroke-linecap="round"/>
+                  <path d="M106 138 L110 145 115 138" fill="#e65b91"/>
+                </g>
+                <path d="M110 54 C100 42 85 51 91 63 C96 72 110 79 110 79 C110 79 124 72 129 63 C135 51 120 42 110 54Z" fill="#f16b9c" stroke="#fff" stroke-width="2"/>
+                <path d="M78 201 L142 201" stroke="#fff" stroke-width="4" opacity=".8"/>
+                <circle cx="110" cy="185" r="5" fill="#f4b5cb"/>
+              </svg>
             </div>
           </div>
         </div>
