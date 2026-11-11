@@ -10,14 +10,14 @@ const CONFIG = {
   // Slide 2: the three personal apology lines.
   slide2: [
     "Mujhe pata hai maine aapko hurt kiya hai.",
-    "Ye baat soch kar mujhe khud bahut bura lag raha hai. Main koi bahana nahi dena chahta.",
-    "Bas itna kehna chahta hoon ki mujhe sach me afsos hai, Sara."
+    "Ye sochkar mujhe dil se afsos hota hai ki meri wajah se aapko takleef hui.",
+    "Sara, aap mere liye bahut important hain. Main dil se chahta hoon ki aap mujhe maaf kar paayein."
   ],
   // Slide 3: replace the first line with the exact mistake when ready.
   mistake: [
     "Maine aapko hurt kiya, aur ye meri galti thi.",
     "Mujhe us waqt sochna chahiye tha ki aapko kaisa lagega.",
-    "Main koi bahana nahi dunga. Bas dil se sorry bolna chahta hoon.",
+    "Main apni galti sudharne ki koshish apne actions se karunga.",
     "Aage se main aisa kuch nahi karunga jo aapko dukh de."
   ],
   // Slide 4: messages appear one at a time.
@@ -45,7 +45,7 @@ const CONFIG = {
     { title: "Aapki care", text: "Aap jis tarah parwah karti hain, wo mujhe bahut khaas lagta hai." },
     { title: "Aapka gussa bhi", text: "Aap naraz hoti hain tab bhi pyaari lagti hain, sach me." },
     { title: "Aapka saath", text: "Aapke saath mujhe sukoon milta hai." },
-    { title: "Bas aap", text: "Mujhe aap jaisi koi aur nahi chahiye." }
+    { title: "Poori aap", text: "Mujhe aapke siwa koi aur nahi chahiye." }
   ],
   // Slide 9: wishes carried by the lanterns.
   wishes: [
@@ -269,6 +269,8 @@ const CONFIG = {
   let pinkyRainStartedAt = 0;
   let pinkyRainCanvasSize = { width: 1, height: 1 };
   let bouquetHoldStart = 0;
+  let bouquetHoldPointerId = null;
+  let bouquetHoldTimer = 0;
   let bouquetTaskIds = [];
   let slideTransitionToken = 0;
   let bouquetHoldDone = false;
@@ -775,8 +777,8 @@ const CONFIG = {
     $("#loveRangeValue").textContent = "∞";
     $(".love-range-wrap").classList.add("is-cracked");
     sparkleBurstAt(loveSlider, 8, ["♡", "✦"]);
-    if (reducedMotion) {
-      // Reduced-motion users see the illustrated Earth, moon and landed rocket without travel.
+    if (reducedMotion && !window.matchMedia("(max-width: 700px)").matches) {
+      // Desktop reduced-motion users see the quiet illustrated scene without travel.
       setLoveMeterStage("static");
       $("#loveLaunchText").textContent = CONFIG.loveMeter.launchText;
       $("#moonMessage").textContent = CONFIG.loveMeter.moonText;
@@ -803,6 +805,14 @@ const CONFIG = {
     $("#loveRangeValue").textContent = `${loveSlider.value}%`;
     if (Number(loveSlider.value) >= 100) activateLoveMeterJourney();
   }, { passive: true });
+
+  // Some mobile browsers dispatch change more reliably than input at release.
+  loveSlider.addEventListener("change", () => {
+    if (loveMeterStage === "slider" && Number(loveSlider.value) >= 100) {
+      $("#loveRangeValue").textContent = "100%";
+      activateLoveMeterJourney();
+    }
+  });
   function bezierPoint(t, p0, p1, p2, p3) {
     const u = 1 - t;
     return { x: u*u*u*p0.x + 3*u*u*t*p1.x + 3*u*t*t*p2.x + t*t*t*p3.x, y: u*u*u*p0.y + 3*u*u*t*p1.y + 3*u*t*t*p2.y + t*t*t*p3.y };
@@ -1516,6 +1526,9 @@ const CONFIG = {
     if(reducedMotion) clearCanvasFully(bouquetExitCanvas,bouquetExitCtx);
   }
   function resetBouquet() {
+    if (bouquetHoldTimer) window.clearTimeout(bouquetHoldTimer);
+    bouquetHoldTimer = 0;
+    bouquetHoldPointerId = null;
     clearBouquetTasks();
     bouquetHoldDone=false; bouquetHoldStart=0; bouquetPetals=[]; bouquetAutoAdvanceAt=0; bouquetRainStartAt=0; bouquetSpawned=0;
     byNumber(15).classList.remove("is-flowering");
@@ -1527,25 +1540,116 @@ const CONFIG = {
     clearCanvasFully(bouquetCanvas,bouquetCtx);
   }
   function beginBouquetHold() {
-    if(currentNumber!==15||bouquetHoldDone||bouquetHoldStart) return;
-    bouquetHoldStart=performance.now(); vibrate(15); $("#bouquetHoldLabel").textContent="Bas thoda sa aur... 💗";
+    if (currentNumber !== 15 || bouquetHoldDone || bouquetHoldStart) return;
+
+    bouquetHoldStart = performance.now();
+    vibrate(15);
+    $("#bouquetHoldLabel").textContent = "Bas thoda sa aur... 💗";
+
+    // Backup timer ensures the hold completes even if mobile RAF is delayed.
+    const checkHold = () => {
+      bouquetHoldTimer = 0;
+      if (currentNumber !== 15 || bouquetHoldDone || !bouquetHoldStart) return;
+
+      const remaining = BOUQUET_HOLD_MS - (performance.now() - bouquetHoldStart);
+      if (remaining <= 0) {
+        finishBouquetHold(performance.now());
+      } else {
+        bouquetHoldTimer = window.setTimeout(checkHold, remaining);
+      }
+    };
+
+    bouquetHoldTimer = window.setTimeout(checkHold, BOUQUET_HOLD_MS);
   }
   function spawnBouquetPetal(size) {
     const type=Math.floor(random(0,6)); const sizeIndex=Math.floor(random(0,3));
     return {type,sizeIndex,x:random(-25,size.width+25),y:-random(22,Math.max(60,size.height*.82)),vx:random(-24,24),speed:random(150,285),rot:random(0,Math.PI*2),spin:random(-1.5,1.5),phase:random(0,6.28),frequency:random(1.1,2.5),amplitude:random(9,34),flip:random(1.2,3.2),alpha:random(.72,1),scale:random(.7,1.22)};
   }
-  function finishBouquetHold(now=performance.now()) {
-    if(bouquetHoldDone) return;
-    bouquetHoldDone=true; bouquetHoldStart=0; bouquetRainStartAt=now; bouquetSpawned=0; bouquetPetals=[];
+  function finishBouquetHold(now = performance.now()) {
+    if (bouquetHoldDone) return;
+
+    if (bouquetHoldTimer) window.clearTimeout(bouquetHoldTimer);
+    bouquetHoldTimer = 0;
+    bouquetHoldDone = true;
+    bouquetHoldStart = 0;
+    bouquetRainStartAt = now;
+    bouquetSpawned = 0;
+    bouquetPetals = [];
+
     byNumber(15).classList.add("is-flowering");
-    $("#bouquetStatus").textContent="Ye saare flowers aapke liye hain. 💐";
-    $("#bouquetHoldLabel").textContent="Aapke liye, Sara 💗"; vibrate([25,30,25]);
-    bouquetAutoAdvanceAt=now+BOUQUET_AUTO_ADVANCE_MS;
+    $("#bouquetStatus").textContent = "Ye saare flowers aapke liye hain. 💐";
+    $("#bouquetHoldLabel").textContent = "Aapke liye, Sara 💗";
+    vibrate([25, 30, 25]);
+    bouquetAutoAdvanceAt = now + BOUQUET_AUTO_ADVANCE_MS;
   }
-  bouquetButton.addEventListener("pointerdown",(event)=>{event.preventDefault();bouquetButton.setPointerCapture?.(event.pointerId);beginBouquetHold();},{passive:false});
-  ["pointerup","pointercancel","lostpointercapture"].forEach((name)=>bouquetButton.addEventListener(name,()=>{if(!bouquetHoldDone&&bouquetHoldStart){bouquetHoldStart=0;$("#bouquetHoldLabel").textContent="Bouquet ko 2 second dabaye rakhiye 💗";bouquetButton.style.setProperty("--hold","0%");$("#bouquetProgressRing").style.setProperty("--hold","0%");}},{passive:true}));
-  bouquetButton.addEventListener("keydown",(event)=>{if((event.key===" "||event.key==="Enter")&&!event.repeat){event.preventDefault();beginBouquetHold();}});
-  bouquetButton.addEventListener("keyup",(event)=>{if(event.key===" "||event.key==="Enter"&&!bouquetHoldDone){if(bouquetHoldStart){bouquetHoldStart=0;$("#bouquetHoldLabel").textContent="Bouquet ko 2 second dabaye rakhiye 💗";bouquetButton.style.setProperty("--hold","0%");$("#bouquetProgressRing").style.setProperty("--hold","0%");}}});
+
+  function cancelBouquetHold() {
+    if (bouquetHoldDone || !bouquetHoldStart) return;
+
+    if (bouquetHoldTimer) window.clearTimeout(bouquetHoldTimer);
+    bouquetHoldTimer = 0;
+    bouquetHoldStart = 0;
+
+    $("#bouquetHoldLabel").textContent = "Bouquet ko 2 second dabaye rakhiye 💗";
+    bouquetButton.style.setProperty("--hold", "0%");
+    $("#bouquetProgressRing").style.setProperty("--hold", "0%");
+  }
+  // Mouse and pen use Pointer Events. Touch uses dedicated touch events
+  // to avoid mobile pointer-capture cancellations interrupting a long press.
+  bouquetButton.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "touch") return;
+    if (event.button !== undefined && event.button !== 0) return;
+    event.preventDefault();
+    if (bouquetHoldPointerId !== null) return;
+
+    bouquetHoldPointerId = event.pointerId;
+    try { bouquetButton.setPointerCapture(event.pointerId); } catch (_) {}
+    beginBouquetHold();
+  }, { passive: false });
+
+  function stopBouquetPointer(event) {
+    if (bouquetHoldPointerId === "touch") return;
+    if (typeof bouquetHoldPointerId === "number" &&
+        event.pointerId !== bouquetHoldPointerId) return;
+
+    bouquetHoldPointerId = null;
+    cancelBouquetHold();
+  }
+
+  ["pointerup", "pointercancel", "lostpointercapture"].forEach((name) => {
+    bouquetButton.addEventListener(name, stopBouquetPointer, { passive: true });
+  });
+
+  bouquetButton.addEventListener("touchstart", (event) => {
+    if (bouquetHoldPointerId !== null || event.touches.length !== 1) return;
+    event.preventDefault();
+    bouquetHoldPointerId = "touch";
+    beginBouquetHold();
+  }, { passive: false });
+
+  function stopBouquetTouch() {
+    if (bouquetHoldPointerId !== "touch") return;
+    bouquetHoldPointerId = null;
+    cancelBouquetHold();
+  }
+
+  bouquetButton.addEventListener("touchend", stopBouquetTouch, { passive: true });
+  bouquetButton.addEventListener("touchcancel", stopBouquetTouch, { passive: true });
+  bouquetButton.addEventListener("contextmenu", (event) => event.preventDefault());
+
+  bouquetButton.addEventListener("keydown", (event) => {
+    if ((event.key === " " || event.key === "Enter") && !event.repeat) {
+      event.preventDefault();
+      beginBouquetHold();
+    }
+  });
+
+  bouquetButton.addEventListener("keyup", (event) => {
+    if (event.key === " " || event.key === "Enter") {
+      cancelBouquetHold();
+    }
+  });
+
   function drawBouquet(dt,size,now) {
     bouquetCtx.clearRect(0,0,size.width,size.height);
     const elapsed=now-bouquetRainStartAt; const total=liteMode?100:BOUQUET_PARTICLES;

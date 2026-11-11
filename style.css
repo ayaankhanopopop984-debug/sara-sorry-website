@@ -1080,3 +1080,29 @@ body:not(.app-active) .slide * { animation-play-state:paused!important; }
     width:95px;
   }
 }
+
+
+/* Mobile interaction and heading fixes */
+@media (max-width: 600px) {
+  #slide-14 .section-title {
+    width: 100%;
+    max-width: 100%;
+    padding-inline: 1px;
+    font-size: clamp(.92rem, 4.2vw, 1.2rem);
+    line-height: 1.2;
+    letter-spacing: -.035em;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  #slide-15 .bouquet-hold {
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  #slide-16 .love-slider {
+    touch-action: pan-y;
+  }
+}
