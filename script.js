@@ -6,7 +6,7 @@ const CONFIG = {
   // Name shown throughout the story.
   name: "Sara",
   // Change this before sharing the site.
-  senderName: "[Your name]",
+  senderName: "Ayaan",
   // Slide 2: the three personal apology lines.
   slide2: [
     "Mujhe pata hai maine aapko hurt kiya hai.",
@@ -1819,15 +1819,46 @@ const CONFIG = {
     if (event.key === "ArrowLeft") { event.preventDefault(); goToRelative(-1); }
   });
 
-  /* Swipe support. Listener is passive so scrolling/gestures stay responsive. */
+  /* Swipe support. Ignore gestures that begin on the love-meter slider. */
   let touchStart = null;
-  document.addEventListener("touchstart", (event) => { const point = event.changedTouches[0]; if (point) touchStart = { x: point.clientX, y: point.clientY }; }, { passive: true });
+
+  document.addEventListener("touchstart", (event) => {
+    const point = event.changedTouches[0];
+    if (!point) return;
+
+    const target = event.target;
+    const ignoreSwipe = Boolean(
+      target && typeof target.closest === "function" &&
+      target.closest("#loveSlider, .love-range-wrap")
+    );
+
+    touchStart = {
+      x: point.clientX,
+      y: point.clientY,
+      ignoreSwipe
+    };
+  }, { passive: true });
+
   document.addEventListener("touchend", (event) => {
-    if (!touchStart) return; const point = event.changedTouches[0]; if (!point) return;
-    const dx = point.clientX - touchStart.x; const dy = point.clientY - touchStart.y; touchStart = null;
+    if (!touchStart) return;
+
+    const start = touchStart;
+    touchStart = null;
+
+    // Slider dragging must never trigger previous/next slide navigation.
+    if (start.ignoreSwipe) return;
+
+    const point = event.changedTouches[0];
+    if (!point) return;
+
+    const dx = point.clientX - start.x;
+    const dy = point.clientY - start.y;
+
     if (Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy) * 1.25) return;
-    if (currentNumber === 12) return; // The bucket carousel handles its own swipe.
-    if (dx < 0) goToRelative(1); else if (dx > 0) goToRelative(-1);
+    if (currentNumber === 12) return;
+
+    if (dx < 0) goToRelative(1);
+    else if (dx > 0) goToRelative(-1);
   }, { passive: true });
 
   /* Lite mode can also switch on after the first 60 slow frames. */
