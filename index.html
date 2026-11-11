@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#fff0f5">
+  <meta name="description" content="A personal apology made with care for Sara.">
+  <title>A Little Something for Sara</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.3/confetti.browser.min.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="ambient" id="ambient" aria-hidden="true">
+    <span class="ambient-blob blob-pink"></span>
+    <span class="ambient-blob blob-peach"></span>
+    <span class="ambient-blob blob-lilac"></span>
+    <span class="ambient-symbol">♡</span><span class="ambient-symbol">✦</span>
+    <span class="ambient-symbol">✿</span><span class="ambient-symbol">🦋</span>
+    <span class="ambient-symbol">♡</span><span class="ambient-symbol">✧</span>
+    <span class="ambient-symbol">❀</span><span class="ambient-symbol">♥</span>
+    <span class="ambient-symbol">✦</span><span class="ambient-symbol">♡</span>
+  </div>
+  <canvas id="sparkleCanvas" class="sparkle-canvas" aria-hidden="true"></canvas>
+
+  <header class="forgiveness-meter" aria-label="Story progress">
+    <span class="meter-label">Maaf karne ka meter 💗</span>
+    <div class="meter-track" id="meterTrack">
+      <span class="meter-fill" id="meterFill"></span>
+      <span class="meter-heart" id="meterHeart" aria-hidden="true">♥</span>
+    </div>
+  </header>
+
+  <main id="experience" class="experience" aria-label="A personal apology for Sara">
+    <!-- 01. Intro and envelope -->
+    <section class="slide intro-slide is-active" id="slide-1" data-slide="1" aria-hidden="false">
+      <div class="slide-content intro-content">
+        <p class="eyebrow reveal">A LITTLE NOTE FOR YOU</p>
+        <h1 class="hero-title reveal">Hey <span class="rose-text" id="nameIntro">Sara</span>...<br>I made this<br>for you.</h1>
+        <p class="soft-copy reveal">Bas aapke liye. Aaram se dekhiye ga. 💗</p>
+        <div class="envelope-scene reveal" id="envelopeScene">
+          <span class="envelope-petal petal-one">✿</span><span class="envelope-petal petal-two">✧</span>
+          <span class="envelope-petal petal-three">♡</span><span class="envelope-petal petal-four">❀</span>
+          <button class="envelope-button" id="envelopeButton" type="button" aria-label="Open the envelope">
+            <span class="envelope" id="envelope" aria-hidden="true">
+              <span class="envelope-letter"><span>For Sara</span><b>♥</b></span>
+              <span class="envelope-back"></span><span class="envelope-front"></span>
+              <span class="envelope-flap"></span><span class="envelope-seal">♥</span>
+            </span>
+          </button>
+        </div>
+        <button class="primary-button reveal" id="startButton" type="button">Start <span>♡</span></button>
+        <p class="tiny-note reveal">Envelope ko tap kijiye ya Start dabaiye.</p>
+      </div>
+    </section>
+
+    <!-- 02. Honest admission and huggable teddy -->
+    <section class="slide" id="slide-2" data-slide="2" data-feature="admission" aria-hidden="true">
+      <div class="slide-content main-card admission-content">
+        <p class="eyebrow reveal">FIRST, THE TRUTH</p>
+        <h2 class="section-title reveal">I know I hurt you.</h2>
+        <div class="short-paragraphs" id="slide2Text"></div>
+        <button class="bear-button reveal" id="sorryBearButton" type="button" aria-label="Give the teddy a hug">
+          <span class="bear-wrap" id="sorryBear"></span>
+        </button>
+        <p class="tiny-note">Teddy ko tap kijiye 🧸</p>
+        <p class="speech-bubble bear-hug-bubble" id="hugBubble2" role="status" aria-live="polite">Ek tight hug aapke liye 🤗</p>
+      </div>
+    </section>
+
+    <!-- 03. What I did wrong -->
+    <section class="slide" id="slide-3" data-slide="3" data-feature="mistake" aria-hidden="true">
+      <div class="slide-content main-card story-card">
+        <p class="eyebrow reveal">I WANT TO OWN IT</p>
+        <h2 class="section-title reveal">What I did wrong</h2>
+        <div class="line-card-list" id="mistakeCards" aria-label="What I did wrong"></div>
+      </div>
+    </section>
+
+    <!-- 04. Chat bubbles -->
+    <section class="slide" id="slide-4" data-slide="4" data-feature="chat" aria-hidden="true">
+      <div class="slide-content chat-card main-card">
+        <p class="eyebrow reveal">ONE MESSAGE AT A TIME</p>
+        <div class="chat-window">
+          <header class="chat-header">
+            <span class="chat-avatar">♥</span>
+            <span class="chat-person"><strong id="chatName">Sara 💗</strong><small>online</small></span>
+            <span class="chat-dots" aria-hidden="true">•••</span>
+          </header>
+          <div class="chat-messages" id="chatMessagesArea" aria-live="polite">
+            <div class="chat-day">TODAY</div>
+            <div class="typing-indicator" id="chatTyping" aria-label="Typing"><i></i><i></i><i></i></div>
+          </div>
+          <div class="chat-footer"><span>Message</span><span>♡</span></div>
+        </div>
+        <p class="chat-caption" id="chatCaption">I wanted to say this properly.</p>
+      </div>
+    </section>
+
+    <!-- 05. Floating I love you animation -->
+    <section class="slide love-slide" id="slide-5" data-slide="5" data-feature="loveFloating" aria-hidden="true">
+      <div class="love-field" id="loveField" aria-hidden="true"></div>
+      <div class="slide-content love-content">
+        <div class="love-center">
+          <div class="orbit-ring" aria-hidden="true"><span>♡</span><span>♥</span><span>♡</span><span>♥</span><span>♡</span><span>♥</span></div>
+          <button class="center-heart-button" id="surpriseHeart" type="button" aria-label="Tap the heart for a surprise"><span class="center-heart">♥</span></button>
+          <h2 class="love-title reveal">No matter what,<br>I love you, <span class="rose-text">Sara.</span></h2>
+          <p class="soft-copy reveal">Aap mere liye bahut khaas hain.</p>
+          <p class="surprise-note" id="surpriseNote" aria-live="polite"></p>
+          <p class="tiny-note reveal">Bas ek chhoti si yaad dilani thi. 💗</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06. Appreciation -->
+    <section class="slide" id="slide-6" data-slide="6" data-feature="meaning" aria-hidden="true">
+      <div class="slide-content main-card list-panel">
+        <p class="eyebrow reveal">A FEW THINGS I WANT YOU TO KNOW</p>
+        <h2 class="section-title reveal">What you mean to me</h2>
+        <div class="appreciation-grid" id="appreciationGrid"></div>
+      </div>
+    </section>
+
+    <!-- 07. Reasons I love you: flip cards -->
+    <section class="slide" id="slide-7" data-slide="7" data-feature="reasons" aria-hidden="true">
+      <div class="slide-content main-card reasons-panel">
+        <p class="eyebrow reveal">LITTLE THINGS I NOTICE</p>
+        <h2 class="section-title reveal">Reasons I love you</h2>
+        <p class="tiny-note reveal">Har card ko tap kijiye. 💗</p>
+        <div class="reasons-grid" id="reasonsGrid"></div>
+      </div>
+    </section>
+
+    <!-- 08. Sara's special quiz -->
+    <section class="slide" id="slide-8" data-slide="8" data-feature="quiz" aria-hidden="true">
+      <div class="slide-content main-card quiz-panel">
+        <p class="eyebrow reveal">ONLY ONE RIGHT PERSON</p>
+        <h2 class="section-title reveal">Sara ka special quiz 🎓</h2>
+        <p class="quiz-counter" id="quizCounter">Sawal 1 / 3</p>
+        <h3 class="quiz-question" id="quizQuestion">Duniya ki sabse pyaari ladki kaun hai?</h3>
+        <div class="quiz-options" id="quizOptions" aria-label="Quiz answers"></div>
+        <div class="quiz-teddy-row">
+          <span class="bear-wrap quiz-bear" id="quizBear" aria-hidden="true"></span>
+          <p class="speech-bubble quiz-speech" id="quizSpeech" role="status" aria-live="polite"></p>
+        </div>
+        <div class="quiz-result" id="quizResult" hidden>
+          <strong>Score: 3 / 3 🏆</strong>
+          <span>Aap toh topper hain, Sara!</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09. Night sky and wish lanterns -->
+    <section class="slide night-slide" id="slide-9" data-slide="9" data-feature="nightSky" aria-hidden="true">
+      <canvas class="slide-canvas night-canvas" id="nightCanvas" aria-hidden="true"></canvas>
+      <div class="lantern-layer" id="lanternLayer" aria-hidden="true"></div>
+      <div class="slide-content night-content">
+        <p class="eyebrow reveal">JUST FOR YOU</p>
+        <h2 class="section-title night-title reveal">Ek wish aapke naam 🌙</h2>
+        <p class="night-help reveal">Screen par kahin bhi tap kijiye. Stars aapka naam banayenge.</p>
+        <p class="constellation-message" id="constellationMessage" aria-live="polite"></p>
+        <button class="primary-button wish-button reveal" id="wishButton" type="button">Wish bhejiye 🏮</button>
+        <p class="tiny-note reveal">Har lantern ke saath ek chhoti si wish.</p>
+      </div>
+    </section>
+
+    <!-- 10. Realisation -->
+    <section class="slide" id="slide-10" data-slide="10" data-feature="realised" aria-hidden="true">
+      <div class="slide-content main-card story-card">
+        <p class="eyebrow reveal">I HAVE BEEN THINKING</p>
+        <h2 class="section-title reveal">What I have realised</h2>
+        <div class="realization-list" id="realizationCards"></div>
+      </div>
+    </section>
+
+    <!-- 11. Promises and pinky promise -->
+    <section class="slide" id="slide-11" data-slide="11" data-feature="promises" aria-hidden="true">
+      <div class="slide-content main-card promise-panel">
+        <p class="eyebrow reveal">WORDS I WANT TO LIVE BY</p>
+        <h2 class="section-title reveal">My promises to you</h2>
+        <div class="promise-grid" id="promisesGrid"></div>
+        <div class="pinky-area reveal">
+          <button class="pinky-button" id="pinkyButton" type="button" aria-label="Press and hold for two seconds to make a pinky promise">
+            <span class="hold-ring" aria-hidden="true"></span>
+            <span class="pinky-label">Pinky Promise 🤞</span>
+            <span class="pinky-hint">2 seconds tak press karke rakhiye</span>
+          </button>
+          <span class="pinky-pop" id="pinkyPop" aria-hidden="true">🤞</span>
+          <p class="pinky-status" id="pinkyStatus" role="status" aria-live="polite"></p>
+        </div>
+        <div class="pinky-love-layer" id="pinkyLoveLayer" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- 12. Ten things to do together -->
+    <section class="slide" id="slide-12" data-slide="12" data-feature="bucketList" aria-hidden="true">
+      <div class="slide-content main-card bucket-panel">
+        <p class="eyebrow reveal">A LIST FOR OUR FUTURE</p>
+        <h2 class="section-title reveal">Abhi ye sab bhi to karna hai 🌍</h2>
+        <p class="tiny-note reveal">Aapke saath, ek-ek karke.</p>
+        <div class="bucket-carousel" id="bucketCarousel">
+          <button class="bucket-arrow bucket-prev" id="bucketPrev" type="button" aria-label="Previous plan">‹</button>
+          <div class="bucket-viewport" id="bucketViewport" aria-live="polite">
+            <div class="bucket-track" id="bucketCards"></div>
+          </div>
+          <button class="bucket-arrow bucket-next" id="bucketNext" type="button" aria-label="Next plan">›</button>
+        </div>
+        <div class="bucket-footer"><span class="bucket-counter" id="bucketCounter">1 / 10</span><div class="bucket-dots" id="bucketDots" aria-label="Plan progress"></div></div>
+      </div>
+    </section>
+
+    <!-- 13. Balloon pop -->
+    <section class="slide" id="slide-13" data-slide="13" data-feature="balloons" aria-hidden="true">
+      <div class="slide-content main-card balloon-panel">
+        <p class="eyebrow reveal">A LITTLE SURPRISE</p>
+        <h2 class="section-title reveal">Gubbare phodiye 🎈</h2>
+        <p class="tiny-note reveal">Har balloon mein aapke liye ek baat hai.</p>
+        <p class="balloon-counter" id="balloonCounter">0 / 8</p>
+        <div class="balloon-grid" id="balloonGrid"></div>
+        <p class="balloon-message" id="balloonMessage" aria-live="polite"></p>
+        <p class="all-balloons" id="allBalloonsMessage" hidden>Saare balloons aapke liye the. 💗</p>
+        <button class="primary-button balloon-next" id="balloonNextButton" type="button" hidden>Aage chalein →</button>
+      </div>
+    </section>
+
+    <!-- 14. Forgiveness question -->
+    <section class="slide forgive-slide" id="slide-14" data-slide="14" aria-hidden="true">
+      <div class="slide-content main-card forgive-panel">
+        <p class="eyebrow reveal">WHENEVER YOU ARE READY</p>
+        <div class="forgive-teddy-row">
+          <button class="bear-wrap forgive-bear bear-button" id="forgiveBear" type="button" aria-label="Give the teddy a hug"></button>
+          <div class="forgive-speech" id="teddySpeech" role="status" aria-live="polite"></div>
+        </div>
+        <h2 class="section-title reveal"><span id="forgiveName">Sara</span>, can you forgive me? 🥺</h2>
+        <p class="soft-copy reveal">Aapka jo bhi jawaab ho, main uski izzat karunga.</p>
+        <div class="forgive-actions" id="forgiveActions">
+          <button class="yes-button" id="yesButton" type="button">Yes 💛</button>
+          <button class="no-button" id="noButton" type="button" aria-disabled="true" tabindex="-1">No</button>
+          <p class="attempt-bubble" id="attemptBubble" role="status" aria-live="polite"></p>
+        </div>
+        <p class="sad-reaction" id="sadReaction" aria-hidden="true">🥺</p>
+      </div>
+    </section>
+
+    <!-- 15. Bouquet hold -->
+    <section class="slide bouquet-slide" id="slide-15" data-slide="15" aria-hidden="true">
+      <canvas class="slide-canvas bouquet-canvas" id="bouquetCanvas" aria-hidden="true"></canvas>
+      <div class="bouquet-wash" id="bouquetWash" aria-hidden="true"></div>
+      <div class="slide-content main-card bouquet-panel">
+        <p class="eyebrow reveal">ONE SMALL GIFT</p>
+        <h2 class="section-title reveal">Sara, ye aapke liye 💐</h2>
+        <p class="soft-copy reveal">Bouquet ko 2 second tak dabaye rakhiye.</p>
+        <button class="bouquet-hold" id="bouquetHold" type="button" aria-label="Press and hold the bouquet for two seconds">
+          <span class="bouquet-progress-ring" id="bouquetProgressRing" aria-hidden="true"></span>
+          <svg class="bouquet-svg" viewBox="0 0 360 390" role="img" aria-label="A bouquet of roses, lilies and little flowers wrapped with a ribbon">
+            <defs>
+              <radialGradient id="rosePink" cx="36%" cy="28%"><stop offset="0" stop-color="#fff0f5"/><stop offset=".55" stop-color="#f48bad"/><stop offset="1" stop-color="#c83e70"/></radialGradient>
+              <radialGradient id="roseRed" cx="36%" cy="28%"><stop offset="0" stop-color="#ffd5df"/><stop offset=".55" stop-color="#e75d7c"/><stop offset="1" stop-color="#9f244d"/></radialGradient>
+              <linearGradient id="lilyPetal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".65" stop-color="#fff4f6"/><stop offset="1" stop-color="#efb7c7"/></linearGradient>
+              <linearGradient id="wrapPaper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0d9"/><stop offset="1" stop-color="#c9a889"/></linearGradient>
+              <linearGradient id="ribbonPink" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff9fbd"/><stop offset="1" stop-color="#cf4778"/></linearGradient>
+              <filter id="flowerShadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#9c5570" flood-opacity=".2"/></filter>
+            </defs>
+            <g class="bouquet-stems" fill="none" stroke="#71956f" stroke-width="4" stroke-linecap="round">
+              <path d="M174 320 Q160 220 85 86 M180 322 Q181 215 180 70 M187 320 Q205 210 275 90 M170 320 Q135 230 125 136 M192 320 Q225 228 235 135"/>
+            </g>
+            <g fill="#88ad88" stroke="#668d70" stroke-width="1.2">
+              <path d="M131 240 Q72 204 73 230 Q91 264 131 240Z"/><path d="M207 251 Q274 206 279 236 Q267 271 207 251Z"/>
+              <path d="M146 206 Q93 163 92 190 Q113 224 146 206Z"/><path d="M214 206 Q261 162 268 188 Q252 223 214 206Z"/>
+              <path d="M177 190 Q132 145 126 169 Q142 201 177 190Z"/><path d="M199 177 Q229 130 246 145 Q239 177 199 177Z"/>
+              <path d="M163 270 Q113 250 113 272 Q135 293 163 270Z"/><path d="M203 274 Q251 244 257 267 Q241 291 203 274Z"/>
+            </g>
+            <!-- Roses: layered petals with soft highlights -->
+            <g filter="url(#flowerShadow)">
+              <g transform="translate(87 88)"><circle r="34" fill="url(#rosePink)"/><path d="M-25 -3 Q-31 -28 -9 -31 Q13 -38 25 -17 Q36 6 13 23 Q-7 39 -25 18 Q-39 2 -25 -3Z" fill="#f7a0bb"/><path d="M-18 -2 Q-15 -21 3 -22 Q22 -20 21 -4 Q20 12 3 18 Q-13 19 -18 5Z" fill="url(#rosePink)"/><path d="M-9 -3 Q-5 -13 5 -10 Q13 -6 7 3 Q1 12 -7 5Z" fill="#d94e80"/><path d="M-22 -18 Q-7 -32 9 -25" fill="none" stroke="#fff1f5" stroke-width="3" opacity=".8"/></g>
+              <g transform="translate(180 68)"><circle r="35" fill="url(#roseRed)"/><path d="M-28 2 Q-33 -23 -9 -32 Q14 -38 29 -15 Q38 9 12 28 Q-11 40 -28 17Z" fill="#ed7897"/><path d="M-18 0 Q-12 -20 8 -20 Q26 -15 20 4 Q13 22 -5 21 Q-19 16 -18 0Z" fill="url(#roseRed)"/><path d="M-8 -3 Q-2 -14 8 -8 Q15 1 4 8 Q-6 10 -8 -3Z" fill="#a92e59"/><path d="M-19 -20 Q-2 -34 13 -23" fill="none" stroke="#ffe7ed" stroke-width="3" opacity=".8"/></g>
+              <g transform="translate(275 96)"><circle r="32" fill="url(#rosePink)"/><path d="M-25 -2 Q-29 -24 -6 -29 Q14 -33 27 -12 Q33 11 10 25 Q-11 35 -26 15Z" fill="#f38aaa"/><path d="M-17 0 Q-12 -17 6 -18 Q23 -12 17 6 Q9 21 -7 18 Q-19 13 -17 0Z" fill="url(#rosePink)"/><path d="M-7 -2 Q-1 -10 7 -5 Q13 3 3 8 Q-6 9 -7 -2Z" fill="#cc4775"/></g>
+              <g transform="translate(124 146) scale(.82)"><circle r="30" fill="url(#roseRed)"/><path d="M-22 -4 Q-25 -24 -4 -27 Q19 -29 25 -8 Q32 12 10 24 Q-12 32 -24 11Z" fill="#eb7492"/><path d="M-14 -2 Q-8 -18 8 -16 Q20 -10 14 6 Q4 18 -9 14Z" fill="#c94069"/><path d="M-5 -2 Q0 -9 7 -3 Q8 4 0 7Z" fill="#9f264f"/></g>
+            </g>
+            <!-- White lilies -->
+            <g transform="translate(235 75)" filter="url(#flowerShadow)">
+              <g fill="url(#lilyPetal)" stroke="#e5b5c4" stroke-width="1.2">
+                <path d="M0 0 Q-36 -32 -27 -62 Q-4 -54 0 0Z"/><path d="M0 0 Q-5 -48 18 -64 Q31 -35 0 0Z"/><path d="M0 0 Q34 -39 53 -22 Q39 6 0 0Z"/><path d="M0 0 Q42 17 34 43 Q9 33 0 0Z"/><path d="M0 0 Q-3 47 -30 48 Q-34 19 0 0Z"/><path d="M0 0 Q-45 11 -52 -14 Q-31 -31 0 0Z"/>
+              </g>
+              <circle r="8" fill="#f6d28a"/><path d="M0 0 L24 -20 M0 0 L29 -4 M0 0 L20 18" stroke="#d3a34d" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="-20" r="3" fill="#f5c76e"/><circle cx="29" cy="-4" r="3" fill="#f5c76e"/><circle cx="20" cy="18" r="3" fill="#f5c76e"/>
+            </g>
+            <g fill="#fff8fb" stroke="#e5b8c8" stroke-width=".8">
+              <circle cx="65" cy="133" r="3"/><circle cx="55" cy="147" r="2.7"/><circle cx="74" cy="151" r="2.5"/><circle cx="294" cy="154" r="3"/><circle cx="307" cy="137" r="2.6"/><circle cx="290" cy="173" r="2.4"/><circle cx="101" cy="50" r="2.4"/><circle cx="300" cy="54" r="2.5"/>
+            </g>
+            <path d="M96 204 Q181 235 268 202 L227 347 Q180 370 136 347Z" fill="url(#wrapPaper)" stroke="#c09a79" stroke-width="2"/>
+            <path d="M105 211 Q180 246 260 208" fill="none" stroke="#fff5e5" stroke-width="4" opacity=".8"/>
+            <path d="M135 322 Q180 337 226 322 L215 370 Q180 386 146 368Z" fill="url(#ribbonPink)"/>
+            <path d="M180 339 C154 303 111 312 139 342 Q158 354 180 344 C202 354 225 345 220 327 Q211 307 180 339Z" fill="url(#ribbonPink)" stroke="#c64b7c" stroke-width="2"/>
+            <circle cx="180" cy="342" r="9" fill="#f7aec7" stroke="#b94372" stroke-width="2"/>
+          </svg>
+          <span class="hold-progress-label" id="bouquetHoldLabel">Hold to receive your flowers 💗</span>
+        </button>
+        <p class="bouquet-status" id="bouquetStatus" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- 16. Kitna pyaar: slider, moon trip and SARA fireworks -->
+    <section class="slide love-meter-slide" id="slide-16" data-slide="16" data-feature="loveMeter" aria-hidden="true">
+      <canvas class="slide-canvas love-meter-canvas" id="loveMeterCanvas" aria-hidden="true"></canvas>
+      <div class="slide-content love-meter-content">
+        <div class="love-meter-slider-stage" id="loveMeterSliderStage">
+          <p class="eyebrow reveal">EK CHHOTA SA SAWAAL</p>
+          <h2 class="section-title love-meter-question" id="loveMeterQuestion">Aapko pata hai, main aapse kitna pyaar karta hoon?</h2>
+          <div class="love-range-wrap">
+            <label class="love-range-label" for="loveSlider">Batayiye kitna? 👇</label>
+            <span class="love-range-value" id="loveRangeValue">0%</span>
+            <input id="loveSlider" class="love-slider" type="range" min="0" max="100" value="0" step="1" aria-label="How much do I love you?">
+            <span class="love-range-hint" id="loveRangeHint">👆</span>
+          </div>
+          <p class="love-crack-text" id="loveCrackText" aria-live="polite"></p>
+        </div>
+        <div class="rocket-stage" id="rocketStage" hidden>
+          <p class="eyebrow rocket-headline" id="loveLaunchText"></p>
+          <p class="rocket-countdown" id="rocketCountdown"></p>
+          <p class="rocket-speed" id="rocketSpeed"></p>
+          <div class="rocket-world">
+            <div class="rocket-earth" id="rocketEarth"><span class="earth-globe">🌍</span><span class="earth-girl">👧🏻</span><span class="girl-heart">💗</span></div>
+            <div class="rocket-moon" id="rocketMoon"><span>🌙</span><small id="moonMessage"></small></div>
+            <div class="love-rocket" id="loveRocket" aria-label="A little rocket carrying a boy with a heart">
+              <span class="rocket-flame">🔥</span><span class="rocket-body">🚀</span><span class="rocket-boy">👨🏻‍🚀</span><span class="rocket-heart">💗</span>
+            </div>
+          </div>
+        </div>
+        <div class="love-meter-final" id="loveMeterFinal" hidden>
+          <p class="love-meter-script" id="loveMeterFinalLine1"></p>
+          <p class="love-meter-copy" id="loveMeterFinalLine2"></p>
+          <p class="love-meter-sara" id="loveMeterSara">SARA</p>
+          <p class="tiny-note" id="loveMeterStatus"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 17. Final page and auto-scrolling letter with two teddies -->
+    <section class="slide final-slide" id="slide-17" data-slide="17" aria-hidden="true">
+      <canvas class="slide-canvas final-canvas" id="finalCanvas" aria-hidden="true"></canvas>
+      <div class="slide-content final-content">
+        <p class="eyebrow reveal">FROM ME TO YOU</p>
+        <h2 class="final-title reveal">Thank you, <span class="rose-text" id="finalName">Sara</span> 💛</h2>
+        <div class="final-paper">
+          <span class="paper-seal" aria-hidden="true">♥</span>
+          <div class="final-letter-scroll" id="finalLetterScroll" tabindex="0" aria-label="A letter for Sara">
+            <div class="final-letter-copy" id="finalLetterCopy"></div>
+          </div>
+        </div>
+        <div class="final-reveal" id="finalReveal" hidden>
+          <p class="final-script">Aap meri duniya ho 💗</p>
+          <button class="final-teddy-pair" id="finalHugButton" type="button" aria-label="Make the two teddies hug">
+            <span class="final-walking-bear final-bear-left" id="finalBearLeft"></span>
+            <span class="final-walking-bear final-bear-right" id="finalBearRight"></span>
+          </button>
+          <p class="final-hug-caption">Ek tight hug aapke liye 🤗🧸</p>
+          <p class="speech-bubble bear-hug-bubble" id="hugBubble14" role="status" aria-live="polite">Ek tight hug aapke liye 🤗</p>
+          <button class="primary-button replay-button" id="replayButton" type="button">Replay ↻</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="navigation" aria-label="Slide navigation">
+    <div class="nav-row">
+      <button class="nav-button" id="prevButton" type="button" disabled>← Prev</button>
+      <span class="slide-counter" id="slideCounter" aria-live="polite">01 / 17</span>
+      <button class="nav-button" id="nextButton" type="button">Next →</button>
+    </div>
+    <div class="progress-dots" id="progressDots" role="group" aria-label="Slide progress"></div>
+  </footer>
+</body>
+</html>
