@@ -11,14 +11,14 @@ const CONFIG = {
   slide2: [
     "Mujhe pata hai maine aapko hurt kiya hai.",
     "Ye sochkar mujhe dil se afsos hota hai ki meri wajah se aapko takleef hui.",
-    "Sara, aap mere liye bahut important hain. Main dil se chahta hoon ki aap mujhe maaf kar paayein."
+    "Sara, aap mere liye bahut important hain. Main aapko bahut chahta hoon."
   ],
   // Slide 3: replace the first line with the exact mistake when ready.
   mistake: [
     "Maine aapko hurt kiya, aur ye meri galti thi.",
     "Mujhe us waqt sochna chahiye tha ki aapko kaisa lagega.",
-    "Main apni galti sudharne ki koshish apne actions se karunga.",
-    "Aage se main aisa kuch nahi karunga jo aapko dukh de."
+    "Main apni galti sudharunga aur apne actions se aapko ye prove bhi karunga, bachwa.",
+    "Aage se main aisa kuch nahi karunga jo aapko dukh de, aur hamesha aapko smile karwaunga."
   ],
   // Slide 4: messages appear one at a time.
   chatMessages: [
@@ -59,7 +59,7 @@ const CONFIG = {
   // Slide 10: what I have realised.
   realization: [
     "Ye galti meri thi, aur main uski poori zimmedari leta hoon and i'll fix everything.",
-    "Aapki baatein sunna, unhe samajhna aur unki izzat karna mere liye bahut zaroori hai.",
+    "Aapki baatein dhyan se sununga, samajhunga aur unki izzat karunga. Kabhi rude nahi hounga; hamesha sabr aur bahut saare pyaar se pesh aaunga.",
     "Main sirf keh kar nahi, apne action se aapka bharosa dobara jeetunga."
   ],
   // Slide 11: four promises I intend to keep.
@@ -148,11 +148,12 @@ const CONFIG = {
   },
   // Slide 8: the quiz questions, four Sara answers and their matching reactions.
   quiz: {
-    // Three question prompts.
+    // Four question prompts.
     questions: [
       "Duniya ki sabse pyaari ladki kaun hai?",
       "Meri favourite insaan kaun hai?",
-      "Jiski smile se mera din ban jata hai, wo kaun?"
+      "Jiski smile se mera din ban jata hai, wo kaun?",
+      "Main sabse zyada pyaar kisse karta hoon?"
     ],
     // Exactly four options; every answer is Sara.
     options: ["Sara", "Sara", "Sara", "Sara"],
@@ -584,7 +585,7 @@ const CONFIG = {
   function renderSlideText() {
     const nameIntro = $("#nameIntro"); const finalName = $("#finalName"); const forgiveName = $("#forgiveName"); const chatName = $("#chatName");
     [nameIntro, finalName, forgiveName].forEach((node) => { if (node) node.textContent = CONFIG.name; });
-    if (chatName) chatName.textContent = `${CONFIG.name} 💗`;
+    if (chatName) chatName.textContent = "Sarah.";
     const slide2 = $("#slide2Text"); slide2.replaceChildren();
     CONFIG.slide2.forEach((line, index) => { const p = document.createElement("p"); p.className = "short-paragraph"; p.textContent = line; p.style.animationDelay = `${index * 180}ms`; slide2.append(p); });
     renderList("#mistakeCards", CONFIG.mistake, ["💗", "🌷", "🤍", "✨"], "line-card stagger-card");
