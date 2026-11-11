@@ -11,7 +11,7 @@ const CONFIG = {
   slide2: [
     "Mujhe pata hai maine aapko hurt kiya hai.",
     "Ye sochkar mujhe dil se afsos hota hai ki meri wajah se aapko takleef hui.",
-    "Sara, aap mere liye bahut important hain. Main aapse bahut pyaar karta hoon."
+    "Sara, aap mere liye bahut important hain. Main aapko bahut pyaar hoon."
   ],
   // Slide 3: replace the first line with the exact mistake when ready.
   mistake: [
@@ -631,6 +631,8 @@ const CONFIG = {
       questionNode.textContent = "Aapne saare sawaal jeet liye! 💗";
       $("#quizCounter").textContent = "Quiz complete";
       optionsNode.replaceChildren();
+      const quizScore = $("#quizResult").querySelector("strong");
+      if (quizScore) quizScore.textContent = `Score: ${CONFIG.quiz.questions.length} / ${CONFIG.quiz.questions.length} 🏆`;
       $("#quizResult").hidden = false;
       sparkleBurstAt($("#quizResult"), 10, ["♥", "♡", "✦"]);
       if (typeof window.confetti === "function" && !liteMode) {
