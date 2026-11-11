@@ -11,7 +11,7 @@ const CONFIG = {
   slide2: [
     "Mujhe pata hai maine aapko hurt kiya hai.",
     "Ye sochkar mujhe dil se afsos hota hai ki meri wajah se aapko takleef hui.",
-    "Sara, aap mere liye bahut important hain. Main aapko bahut chahta hoon."
+    "Sara, aap mere liye bahut important hain. Main aapse bahut pyaar karta hoon."
   ],
   // Slide 3: replace the first line with the exact mistake when ready.
   mistake: [
