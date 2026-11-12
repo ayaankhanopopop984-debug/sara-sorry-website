@@ -177,7 +177,7 @@ const CONFIG = {
     { title: "Stargazing", caption: "Stars dekhte hue main aapko bataunga ki main aapse kitna pyaar karta hoon 🥹✨", file: "images/stargazing.jpg", emoji: "✨" },
     { title: "Candlelight Dinner", caption: "Aap aur main, har week ek beautiful dinner… I promise 🥰❤️", file: "images/candlelight-dinner.jpg", emoji: "🕯️" },
     { title: "Taj Mahal", caption: "Taj Mahal ko mohabbat ki nishani kehte hain… uske saamne aapko apni mohabbat ka ehsaas dilana hai 🥹🤍", file: "images/taj-mahal.jpg", emoji: "🤍" },
-    { title: "Our Cute Family", caption: "You, me & our little family — ek badi si beti, ek chhota sa beta aur dher saara pyaar 🤍", file: "images/our-cute-family.jpg", emoji: "👨‍👩‍👧‍👦" },
+    { title: "Our Cute Family", caption: "You, me & our little world — dher saari muskurahatein, sukoon aur beintehaa pyaar 🤍", file: "images/our-cute-family.jpg", emoji: "👨‍👩‍👧‍👦" },
     { title: "Our Nikah", caption: "Nikah ke is khoobsurat din se, zindagi bhar aapka haath thaam kar chalna hai. 🥹🤍", file: "images/our-nikah.jpg", emoji: "💍" },
     { title: "Under the Moon", caption: "Chaand ko dekhte hue aapko bataunga how much I love you… aur aap kitni pretty hain aur meri kitni khaas hain—meri life, heartbeat, love, sab aap hi hain 🫣💗", file: "images/under-the-moon.jpg", emoji: "🌙" }
   ],
