@@ -1106,3 +1106,66 @@ body:not(.app-active) .slide * { animation-play-state:paused!important; }
     touch-action: pan-y;
   }
 }
+
+/* Nikah card: preserve both bride and groom faces on all screen sizes */
+#slide-12 .bucket-photo[src$="our-nikah.jpg"] {
+  object-fit: contain !important;
+  object-position: center center !important;
+  background-color: #f6edf1;
+}
+
+#slide-12 .bucket-visual:has(.bucket-photo[src$="our-nikah.jpg"]) {
+  background: #f6edf1;
+}
+
+#slide-12 .bucket-visual:has(.bucket-photo[src$="our-nikah.jpg"]) .bucket-shade {
+  background: linear-gradient(
+    180deg,
+    rgba(35,17,33,0) 0%,
+    rgba(35,17,33,0.02) 55%,
+    rgba(35,17,33,0.58) 100%
+  );
+}
+
+/* Nikah: large, close-up framing of BOTH bride and groom */
+#slide-12 .bucket-photo[src$="our-nikah.jpg"] {
+  object-fit: cover !important;
+  object-position: center 7% !important;
+  transform: scale(1.15) !important;
+  transform-origin: center top !important;
+  background: transparent !important;
+}
+
+#slide-12 .bucket-visual:has(.bucket-photo[src$="our-nikah.jpg"]) {
+  background: #2b2025 !important;
+}
+
+@media (max-width: 600px) {
+  #slide-12 .bucket-photo[src$="our-nikah.jpg"] {
+    object-position: center 7% !important;
+    transform: scale(1.12) !important;
+    transform-origin: center top !important;
+  }
+}
+
+/* Slightly move Nikah couple upward */
+#slide-12 .bucket-photo[src$="our-nikah.jpg"] {
+  object-position: center 12% !important;
+}
+
+@media (max-width: 600px) {
+  #slide-12 .bucket-photo[src$="our-nikah.jpg"] {
+    object-position: center 12% !important;
+  }
+}
+
+/* Slightly move Nikah couple upward */
+#slide-12 .bucket-photo[src$="our-nikah.jpg"] {
+  object-position: center 12% !important;
+}
+
+@media (max-width: 600px) {
+  #slide-12 .bucket-photo[src$="our-nikah.jpg"] {
+    object-position: center 12% !important;
+  }
+}
