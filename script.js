@@ -167,16 +167,19 @@ const CONFIG = {
   },
   // Slide 12: the ten things I hope we can do together. Add the matching photos inside images/.
   bucketList: [
-    { title: "Horse Riding", caption: "Aapke saath ek lamba horse ride", file: "images/horse-riding.jpg", emoji: "🐎" },
-    { title: "Paragliding", caption: "Upar se poori duniya aapke saath dekhni hai", file: "images/paragliding.jpg", emoji: "🪂" },
-    { title: "Hot Air Balloon", caption: "Subah subah aasmaan me, aapke saath", file: "images/hot-air-balloon.jpg", emoji: "🎈" },
-    { title: "Makkah aur Madina", caption: "Inshallah, saath me Umrah aur ziyarat", file: "images/makkah-madina.jpg", emoji: "🕋" },
-    { title: "Beach Sunset", caption: "Ret par aapke saath dhalta suraj dekhna", file: "images/beach-sunset.jpg", emoji: "🌅" },
-    { title: "Kashmir ki Barf", caption: "Barf me aapke saath chai aur baatein", file: "images/kashmir-snow.jpg", emoji: "❄️" },
-    { title: "Road Trip", caption: "Bina plan ke, bas aap aur lambi sadak", file: "images/road-trip.jpg", emoji: "🚗" },
-    { title: "Stargazing", caption: "Raat bhar sitaare dekhna aur baatein karna", file: "images/stargazing.jpg", emoji: "⛺" },
-    { title: "Candlelight Dinner", caption: "Ek poori shaam sirf aapke naam", file: "images/candlelight-dinner.jpg", emoji: "🕯️" },
-    { title: "Taj Mahal", caption: "Taj ke saamne aapke saath ek yaadgaar photo", file: "images/taj-mahal.jpg", emoji: "🤍" }
+    { title: "Horse Riding", caption: "Aapke saath horse riding aur ek chhoti si race… aur main khushi-khushi aapse haar jaunga 👉👈", file: "images/horse-riding.jpg", emoji: "🐎" },
+    { title: "Paragliding", caption: "Meri duniya (yaani aap 🫣🤭) ke saath upar se poori duniya dekhna 😝💗", file: "images/paragliding.jpg", emoji: "🪂" },
+    { title: "Beautiful Ride", caption: "Aapke saath ek beautiful ride… sirf aap aur main 🥹💗", file: "images/hot-air-balloon.jpg", emoji: "🎈" },
+    { title: "Makkah aur Madina", caption: "Inshallah, ek din aapke saath Umrah aur ziyarat karni hai 🤍", file: "images/makkah-madina.jpg", emoji: "🕋" },
+    { title: "Beach Sunset", caption: "Samandar ke kinaare sunset dekhna… bas aap aur main 🥹💗", file: "images/beach-sunset.jpg", emoji: "🌅" },
+    { title: "Kashmir ki Barf", caption: "Aapke saath snowfall, garam chai aur ek cute si snow fight 😂❄️", file: "images/kashmir-snow.jpg", emoji: "❄️" },
+    { title: "Road Trip", caption: "Aap music sambhalna, main driving karunga… aur raste bhar humari baatein 🤭❤️", file: "images/road-trip.jpg", emoji: "🚗" },
+    { title: "Stargazing", caption: "Stars dekhte hue main aapko bataunga ki main aapse kitna pyaar karta hoon 🥹✨", file: "images/stargazing.jpg", emoji: "✨" },
+    { title: "Candlelight Dinner", caption: "Aap aur main, har week ek beautiful dinner… I promise 🥰❤️", file: "images/candlelight-dinner.jpg", emoji: "🕯️" },
+    { title: "Taj Mahal", caption: "Taj Mahal ko mohabbat ki nishani kehte hain… uske saamne aapko apni mohabbat ka ehsaas dilana hai 🥹🤍", file: "images/taj-mahal.jpg", emoji: "🤍" },
+    { title: "Our Cute Family", caption: "You, me & our little family — ek badi si beti, ek chhota sa beta aur dher saara pyaar 🤍", file: "images/our-cute-family.jpg", emoji: "👨‍👩‍👧‍👦" },
+    { title: "Our Nikah", caption: "Nikah ke is khoobsurat din se, zindagi bhar aapka haath thaam kar chalna hai. 🥹🤍", file: "images/our-nikah.jpg", emoji: "💍" },
+    { title: "Under the Moon", caption: "Chaand ko dekhte hue aapko bataunga how much I love you… aur aap kitni pretty hain aur meri kitni khaas hain—meri life, heartbeat, love, sab aap hi hain 🫣💗", file: "images/under-the-moon.jpg", emoji: "🌙" }
   ],
   // Slide 16: every line in the moon-and-back sequence.
   loveMeter: {
@@ -669,9 +672,21 @@ const CONFIG = {
   /* Slide 12: light-touch carousel, mounting only the current card and neighbours. */
   const bucketViewport = $("#bucketViewport");
   const bucketCards = $("#bucketCards");
+  const bucketImagePreloadCache = new Map();
+
+  function preloadBucketImage(item) {
+    if (!item || !item.file || bucketImagePreloadCache.has(item.file)) return;
+    const image = new Image();
+    image.decoding = "async";
+    image.fetchPriority = "low";
+    image.src = item.file;
+    bucketImagePreloadCache.set(item.file, image);
+  }
   function renderBucketCarousel() {
     bucketCards.replaceChildren();
     const items = CONFIG.bucketList;
+    preloadBucketImage(items[bucketIndex + 1]);
+    preloadBucketImage(items[bucketIndex + 2]);
     const start = Math.max(0, bucketIndex - 1);
     const end = Math.min(items.length - 1, bucketIndex + 1);
     for (let index = start; index <= end; index += 1) {
@@ -684,7 +699,12 @@ const CONFIG = {
       const visual = document.createElement("div"); visual.className = "bucket-visual";
       visual.style.setProperty("--bucket-tone", ["#f5c4d5", "#ddc8f7", "#ffd3bf", "#e7c8d5", "#ffc9b9", "#cbdcf2", "#e5c3b8", "#c7bfdc", "#e5c6ce", "#d9c5e9"][index]);
       const fallback = document.createElement("div"); fallback.className = "bucket-fallback"; fallback.textContent = item.emoji;
-      const img = document.createElement("img"); img.className = "bucket-photo"; img.alt = ""; img.loading = "lazy"; img.decoding = "async";
+      const img = document.createElement("img");
+      img.className = "bucket-photo";
+      img.alt = "";
+      img.loading = diff === 0 ? "eager" : "lazy";
+      img.fetchPriority = diff === 0 ? "high" : "low";
+      img.decoding = "async";
       img.addEventListener("load", () => { visual.classList.add("has-photo"); fallback.hidden = true; }, { once: true });
       img.addEventListener("error", () => { img.remove(); visual.classList.remove("has-photo"); fallback.hidden = false; }, { once: true });
       img.src = item.file;
@@ -1342,7 +1362,11 @@ const CONFIG = {
       const shape = document.createElement("span"); shape.className = "balloon-shape"; const string = document.createElement("span"); string.className = "balloon-string"; button.append(shape, string);
       button.addEventListener("click", () => popBalloon(index, button)); grid.append(button);
     });
-    $("#balloonCounter").textContent = "0 / 8"; $("#balloonMessage").textContent = ""; $("#allBalloonsMessage").hidden = true; $("#balloonNextButton").hidden = true;
+    $("#balloonCounter").textContent = "0 / 8";
+    $("#balloonMessage").textContent = "";
+    $("#allBalloonsMessage").hidden = true;
+    $("#balloonNextButton").textContent = "Dono saath aage chalein? 👉👈";
+    $("#balloonNextButton").hidden = true;
   }
   function popBalloon(index, button) {
     if (balloonPopped.has(index)) return;
